@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Perspective</title>
+    <link href="./css/base.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <script src="./js/three.js"></script>
+    <script src="./js/app.js"></script>
+
+    <style type="text/css">
+        div.view {
+            border: 2px solid red;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-row">
+                    <div class="col-auto">
+                        <select class="form-control" id="selectedCamera" onchange="onSelectedCameraChange()">
+                            <option value="camera1">Camera 1</option>
+                            <option value="camera2">Camera 2</option>
+                            <option value="camera3">Camera 3</option>
+                            <option value="camera4">Camera 4</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn-sm btn-primary" onclick="onUpdate()">Update</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-row">
+                    <div class="col-auto">
+                        <label>Position</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="pos-x" id="posx">
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="pos-y" id="posy">
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="pos-z" id="posz">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-auto">
+                        <label>Rotation</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="rot-x" id="rotx">
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="rot-y" id="roty">
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="rot-z" id="rotz">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th class="text-center">View1</th>
+                            <th class="text-center">View2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div id="view1">
+
+                                </div>
+                            </td>
+                            <td>
+                                <div id="view2">
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th class="text-center">View3</th>
+                            <th class="text-center">View4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div id="view3">
+
+                                </div>
+                            </td>
+                            <td>
+                                <div id="view4">
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
