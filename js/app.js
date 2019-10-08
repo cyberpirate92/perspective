@@ -3,6 +3,9 @@ const CAMERA_VELOCITY = 0.02;
 
 let scene = new THREE.Scene();
 
+let xAxisGeometry = new THREE.Geometry();
+let yAxisGeometry = new THREE.Geometry();
+let zAxisGeometry = new THREE.Geometry();
 let boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 let starSphereGeometry = new THREE.SphereGeometry();
 let planetSphereGeometry = new THREE.SphereGeometry(0.5);
@@ -14,12 +17,17 @@ let materialBlue = new THREE.MeshBasicMaterial({ color: 0x0000ff });
 let materialGreen = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 let materialYellow = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 let materialSkyBlue = new THREE.MeshBasicMaterial({ color: 0x7ec0ee });
+let materialXAxis = new THREE.LineBasicMaterial({ color: 0xff0000 });
+let materialYAxis = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+let materialZAxis = new THREE.LineBasicMaterial({ color: 0x0000ff });
 
-let cube = new THREE.Mesh(boxGeometry, materialGreen);
 let starSphere = new THREE.Mesh(starSphereGeometry, materialYellow);
 let planetSphere = new THREE.Mesh(planetSphereGeometry, materialSkyBlue);
 let starSphereEdgeLines = new THREE.LineSegments(starSphereEdges, new THREE.LineBasicMaterial({ color: 0x000000 }));
 let planetSphereEdgeLines = new THREE.LineSegments(planetSphereEdges, new THREE.LineBasicMaterial({ color: 0x000000 }));
+let xAxisReferenceLine = new THREE.Line(xAxisGeometry, materialXAxis);
+let yAxisReferenceLine = new THREE.Line(yAxisGeometry, materialYAxis);
+let zAxisReferenceLine = new THREE.Line(zAxisGeometry, materialZAxis);
 
 let camera1 = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerHeight) * 1, 0.1, 1000);
 let camera2 = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerHeight) * 1, 0.1, 1000);
@@ -37,6 +45,15 @@ let view3;
 let view4;
 let cameraVelocity;
 
+xAxisGeometry.vertices.push(new THREE.Vector3(-5, 0, 0));
+xAxisGeometry.vertices.push(new THREE.Vector3(5, 0, 0));
+
+yAxisGeometry.vertices.push(new THREE.Vector3(0, -5, 0));
+yAxisGeometry.vertices.push(new THREE.Vector3(0, 5, 0));
+
+zAxisGeometry.vertices.push(new THREE.Vector3(0, 0, -5));
+zAxisGeometry.vertices.push(new THREE.Vector3(0, 0, 5));
+
 window.addEventListener('load', () => {
     view1 = document.querySelector("#view1");
     view2 = document.querySelector("#view2");
@@ -53,11 +70,13 @@ window.addEventListener('load', () => {
     view3.appendChild(renderer3.domElement);
     view4.appendChild(renderer4.domElement);
 
-    // scene.add(cube);
     scene.add(starSphere);
     scene.add(planetSphere);
     scene.add(starSphereEdgeLines);
     scene.add(planetSphereEdgeLines);
+    scene.add(xAxisReferenceLine);
+    scene.add(yAxisReferenceLine);
+    scene.add(zAxisReferenceLine);
 
     setPosition(camera1, 0, 0, 5);
     setRotation(camera1);
@@ -71,10 +90,10 @@ window.addEventListener('load', () => {
     setPosition(camera4, -5, -2, 5);
     setRotation(camera4);
 
-    setPosition(starSphere, 0, 0, -3);
-    setPosition(starSphereEdgeLines, 0, 0, -3);
-    setPosition(planetSphere, 0, 0, -6);
-    setPosition(planetSphereEdgeLines, 0, 0, -6);
+    setPosition(starSphere, 0, 0, 0);
+    setPosition(starSphereEdgeLines, 0, 0, 0);
+    setPosition(planetSphere, 0, 0, -3);
+    setPosition(planetSphereEdgeLines, 0, 0, -3);
 
     animate();
 });
@@ -87,9 +106,9 @@ let animate = function () {
     planetSphere.rotation.x -= 0.03;
     planetSphereEdgeLines.rotation.x -= 0.03;
 
-    if (camera2.position.z < -3) {
+    if (camera2.position.z < 0) {
         cameraVelocity = Math.abs(CAMERA_VELOCITY);
-    } else if (camera2.position.z > 3) {
+    } else if (camera2.position.z > 5) {
         cameraVelocity = CAMERA_VELOCITY * -1;
     }
     camera2.position.z += cameraVelocity;
