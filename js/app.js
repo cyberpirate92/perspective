@@ -12,6 +12,11 @@ const COLOR_YELLOW = 0xffff00;
 const COLOR_GRAY = 0xf5f3ce;
 const COLOR_GRAY_ALT = 0x93B8BE;
 
+const TEXTURE_SUN = './assets/planets/sunmap.jpg';
+const TEXTURE_MERCURY = './assets/planets/mercurymap.jpg';
+const TEXTURE_EARTH = './assets/planets/earth_clouds_2048.jpg';
+const TEXTURE_MOON = './assets/planets/moon_1024.jpg';
+
 let position = {
     planet: {
         x: 6,
@@ -47,7 +52,12 @@ let rendererProperties = {
         width: window.innerWidth / VIEW_SCALE_FACTOR,
         height: window.innerHeight / VIEW_SCALE_FACTOR,
     }
-}
+};
+
+let earthTexture = new THREE.TextureLoader().load(TEXTURE_EARTH);
+let moonTexture = new THREE.TextureLoader().load(TEXTURE_MOON);
+let sunTexture = new THREE.TextureLoader().load(TEXTURE_SUN);
+let mercuryTexture = new THREE.TextureLoader().load(TEXTURE_MERCURY);
 
 let scene = new THREE.Scene();
 let xAxisGeometry = new THREE.Geometry();
@@ -77,17 +87,22 @@ let materialGreen = new THREE.MeshLambertMaterial({ color: COLOR_GREEN });
 let materialYellow = new THREE.MeshLambertMaterial({ color: COLOR_YELLOW });
 let materialGray = new THREE.MeshLambertMaterial({ color: COLOR_GRAY});
 
+let materialStar = new THREE.MeshBasicMaterial({ map: sunTexture });
+let materialEarth = new THREE.MeshBasicMaterial({ map: earthTexture });
+let materialMoon = new THREE.MeshBasicMaterial({ map: moonTexture });
+let materialMercury = new THREE.MeshBasicMaterial({ map: mercuryTexture });
+
 let materialXAxis = new THREE.LineBasicMaterial({ color: COLOR_RED });
 let materialZAxis = new THREE.LineBasicMaterial({ color: COLOR_BLUE });
 let materialYAxis = new THREE.LineBasicMaterial({ color: COLOR_GREEN });
 
-let starSphere = new THREE.Mesh(starSphereGeometry, materialYellow);
+let starSphere = new THREE.Mesh(starSphereGeometry, materialStar);
 let xAxisReferenceLine = new THREE.Line(xAxisGeometry, materialXAxis);
 let yAxisReferenceLine = new THREE.Line(yAxisGeometry, materialYAxis);
 let zAxisReferenceLine = new THREE.Line(zAxisGeometry, materialZAxis);
-let planetSphere = new THREE.Mesh(planetSphereGeometry, materialSkyBlue);
-let planet1Sphere = new THREE.Mesh(planet1SphereGeometry, materialRed);
-let moonSphere = new THREE.Mesh(moonSphereGeometry, materialGray);
+let planetSphere = new THREE.Mesh(planetSphereGeometry, materialEarth);
+let planet1Sphere = new THREE.Mesh(planet1SphereGeometry, materialMercury);
+let moonSphere = new THREE.Mesh(moonSphereGeometry, materialMoon);
 let planetOrbitTraceLine = new THREE.LineSegments(planetOrbitEdges, new THREE.LineBasicMaterial({ color: 0xffffff }));
 let planet1OrbitTraceLine = new THREE.LineSegments(planet1OrbitEdges, new THREE.LineBasicMaterial({ color: 0xffffff }));
 let moonOrbitTraceLine = new THREE.LineSegments(moonOrbitEdges, new THREE.LineBasicMaterial({ color: 0xffffff }));
@@ -189,6 +204,11 @@ function initializeScene() {
     initializeRenderer(renderer2);
     initializeRenderer(renderer3);
     initializeRenderer(renderer4);
+
+    starSphereEdgeLines.visible = false;
+    planet1SphereEdgeLines.visible = false;
+    planetSphereEdgeLines.visible = false;
+    moonSphereEdgeLines.visible = false;
 
     xAxisGeometry.vertices.push(new THREE.Vector3(-1 * AXIS_LENGTH, 0, 0));
     xAxisGeometry.vertices.push(new THREE.Vector3(AXIS_LENGTH, 0, 0));
