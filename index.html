@@ -7,6 +7,7 @@
     <link href="./css/base.css" rel="stylesheet">
     <link href="./css/bootstrap.min.css" rel="stylesheet">
     <script src="./js/three.js"></script>
+    <script src="./js/orbitControls.js"></script>
     <script src="./js/app.js"></script>
 
     <style type="text/css">
@@ -34,7 +35,6 @@
                         <td colspan="3">
                             <select class="form-control" id="selectedCamera" onchange="onSelectedCameraChange()">
                                 <option value="camera1">Camera 1 (View 1)</option>
-                                <option value="camera2" disabled>Camera 2 (View 2)</option>
                                 <option value="camera3">Camera 3 (View 3)</option>
                                 <option value="camera4">Camera 4 (View 4)</option>
                             </select>
@@ -91,7 +91,7 @@
                     <thead class="bg-dark text-white">
                         <tr>
                             <th class="text-center">View 1</th>
-                            <th class="text-center">View 2</th>
+                            <th class="text-center">View 2 (Interactive)</th>
                         </tr>
                     </thead>
                     <tbody>

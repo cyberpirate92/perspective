@@ -123,6 +123,11 @@ function initializeRenderer(rendererObj) {
 }
 
 function initializeScene() {
+    initializeRenderer(renderer1);
+    initializeRenderer(renderer2);
+    initializeRenderer(renderer3);
+    initializeRenderer(renderer4);
+
     xAxisGeometry.vertices.push(new THREE.Vector3(-1 * AXIS_LENGTH, 0, 0));
     xAxisGeometry.vertices.push(new THREE.Vector3(AXIS_LENGTH, 0, 0));
 
@@ -138,6 +143,11 @@ function initializeScene() {
     camera2.position.set(0, 2, 6);
     camera2.rotation.set(0, 0, 0);
 
+    var controls = new THREE.OrbitControls(camera2, renderer2.domElement);
+    controls.maxPolarAngle = Math.PI * 0.5;
+    controls.minDistance = 5;
+    controls.maxDistance = 15;
+
     camera3.position.set(-5, 0, -5);
     camera3.rotation.set(0, 180, 0);
 
@@ -146,7 +156,7 @@ function initializeScene() {
 
     starSphere.position.set(0, 0, 0);
     starSphereEdgeLines.position.set(0, 0, 0);
-    
+
     planetSphere.position.set(0, 0, -3);
     planetSphereEdgeLines.position.set(0, 0, -3);
 
@@ -159,11 +169,6 @@ function initializeScene() {
     scene.add(yAxisReferenceLine);
     scene.add(zAxisReferenceLine);
     scene.add(planetOrbitTraceLine);
-
-    initializeRenderer(renderer1);
-    initializeRenderer(renderer2);
-    initializeRenderer(renderer3);
-    initializeRenderer(renderer4);
 }
 
 function onSelectedCameraChange() {
