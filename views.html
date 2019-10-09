@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>perspective.</title>
+    <link href="./css/base.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <script src="./lib/three.js"></script>
+    <script src="./lib/orbitControls.js"></script>
+    <script src="./js/views.js"></script>
+
+    <style type="text/css">
+        div.view {
+            border: 2px solid red;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid bg-light">
+        <div class="row py-2 bg-dark text-white">
+            <div class="col-sm-12 col-md-9">
+                <h4>perspective.</h4>
+            </div>
+            <div class="col-sm-12 col-md">
+                <a class="float-right btn-sm btn-primary" href="./interactive.html">interactive</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table>
+                    <tr>
+                        <td>Show Orbits</td>
+                        <td>
+                            <input type='checkbox' onchange="onOrbitSettingChange(this)" checked>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Show Axes</td>
+                        <td>
+                            <input type='checkbox' onchange="onAxesSettingChange(this)" checked>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Select Camera
+                        </td>
+                        <td colspan="3">
+                            <select class="form-control" id="selectedCamera" onchange="onSelectedCameraChange()">
+                                <option value="camera1">Camera 1 (View 1)</option>
+                                <option value="camera3">Camera 3 (View 3)</option>
+                                <option value="camera4">Camera 4 (View 4)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Position</td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="pos-x" id="posx"
+                                onchange="onUpdate()">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="pos-y" id="posy"
+                                onchange="onUpdate()">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="pos-z" id="posz"
+                                onchange="onUpdate()">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Rotation</td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="rot-x" id="rotx"
+                                onchange="onUpdate()">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="rot-y" id="roty"
+                                onchange="onUpdate()">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="rot-z" id="rotz"
+                                onchange="onUpdate()">
+                        </td>
+                    </tr>
+                    <tr id="axisLegend">
+                        <td>Axis Legend</td>
+                        <td>
+                            <div class="color-legend x-axis-legend"></div> x axis
+                        </td>
+                        <td>
+                            <div class="color-legend y-axis-legend"></div> y axis
+                        </td>
+                        <td>
+                            <div class="color-legend z-axis-legend"></div> z axis
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th class="text-center">View 1</th>
+                            <th class="text-center">View 2 (Interactive)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div id="view1">
+
+                                </div>
+                            </td>
+                            <td>
+                                <div id="view2">
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th class="text-center">View 3</th>
+                            <th class="text-center">View 4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div id="view3">
+
+                                </div>
+                            </td>
+                            <td>
+                                <div id="view4">
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
