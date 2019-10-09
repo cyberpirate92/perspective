@@ -1,6 +1,16 @@
 const SCALE_FACTOR = 2.25;
 const CAMERA_VELOCITY = 0.02;
 
+let position = {
+    planet: {
+        x: 6,
+        y: 0,
+        z: 0,
+        theta: 0,
+        traceRadius: 2
+    }
+};
+
 let scene = new THREE.Scene();
 
 let xAxisGeometry = new THREE.Geometry();
@@ -12,6 +22,8 @@ let starSphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 let planetSphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
 let starSphereEdges = new THREE.EdgesGeometry(starSphereGeometry);
 let planetSphereEdges = new THREE.EdgesGeometry(planetSphereGeometry);
+let planetOrbitGeometry = new THREE.CircleGeometry(position.planet.traceRadius, 32, 32);
+var planetOrbitEdges = new THREE.EdgesGeometry(planetOrbitGeometry);
 
 let materialRed = new THREE.MeshLambertMaterial({ color: 0xff0000 });
 let materialBlue = new THREE.MeshLambertMaterial({ color: 0x0000ff });
@@ -29,6 +41,7 @@ let planetSphereEdgeLines = new THREE.LineSegments(planetSphereEdges, new THREE.
 let xAxisReferenceLine = new THREE.Line(xAxisGeometry, materialXAxis);
 let yAxisReferenceLine = new THREE.Line(yAxisGeometry, materialYAxis);
 let zAxisReferenceLine = new THREE.Line(zAxisGeometry, materialZAxis);
+var planetOrbitTraceLine = new THREE.LineSegments(planetOrbitEdges, new THREE.LineBasicMaterial({color: 0xffffff}));
 
 let camera1 = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerHeight) * 1, 0.1, 1000);
 let camera2 = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerHeight) * 1, 0.1, 1000);
@@ -45,16 +58,6 @@ let view2;
 let view3;
 let view4;
 let cameraVelocity;
-
-let position = {
-    planet: {
-        x: 6,
-        y: 0,
-        z: 0,
-        theta: 0,
-        traceRadius: 2
-    }
-};
 
 xAxisGeometry.vertices.push(new THREE.Vector3(-5, 0, 0));
 xAxisGeometry.vertices.push(new THREE.Vector3(5, 0, 0));
@@ -93,6 +96,7 @@ window.addEventListener('load', () => {
     scene.add(xAxisReferenceLine);
     scene.add(yAxisReferenceLine);
     scene.add(zAxisReferenceLine);
+    scene.add(planetOrbitTraceLine);
 
     camera1.position.set(0, 0, 4);
     camera1.rotation.set(0, 0, 0);
@@ -132,12 +136,12 @@ let animate = function () {
     planetSphere.position.set(position.planet.x, position.planet.y, position.planet.z);
     planetSphereEdgeLines.position.set(position.planet.x, position.planet.y, position.planet.z);
 
-    if (camera2.position.z < 0) {
-        cameraVelocity = Math.abs(CAMERA_VELOCITY);
-    } else if (camera2.position.z > 5) {
-        cameraVelocity = CAMERA_VELOCITY * -1;
-    }
-    camera2.position.z += cameraVelocity;
+    // if (camera2.position.z < 0) {
+    //     cameraVelocity = Math.abs(CAMERA_VELOCITY);
+    // } else if (camera2.position.z > 5) {
+    //     cameraVelocity = CAMERA_VELOCITY * -1;
+    // }
+    // camera2.position.z += cameraVelocity;
 
     renderer1.render(scene, camera1);
     renderer2.render(scene, camera2);
