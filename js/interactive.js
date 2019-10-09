@@ -9,7 +9,8 @@ const COLOR_RED = 0xff0000;
 const COLOR_GREEN = 0x00ff00;
 const COLOR_BLUE = 0x0000ff;
 const COLOR_YELLOW = 0xffff00;
-const COLOR_GRAY = 0xd3d3d3;
+const COLOR_GRAY = 0xf5f3ce;
+const COLOR_GRAY_ALT = 0x93B8BE;
 
 let position = {
     planet: {
@@ -20,7 +21,7 @@ let position = {
         traceRadius: 4
     },
     moon: {
-        x: 6, 
+        x: 6,
         y: 0,
         z: 0,
         theta: 0,
@@ -61,19 +62,21 @@ let starSphereEdges = new THREE.EdgesGeometry(starSphereGeometry);
 let planetSphereEdges = new THREE.EdgesGeometry(planetSphereGeometry);
 let planet1SphereEdges = new THREE.EdgesGeometry(planet1SphereGeometry);
 let moonSphereEdges = new THREE.EdgesGeometry(moonSphereGeometry);
-let planetOrbitGeometry = new THREE.CircleGeometry(position.planet.traceRadius, 32, 32);
-let planet1OrbitGeometry = new THREE.CircleGeometry(position.planet1.traceRadius, 32, 32);
+let planetOrbitGeometry = new THREE.CircleGeometry(position.planet.traceRadius, 108, 108);
+let planet1OrbitGeometry = new THREE.CircleGeometry(position.planet1.traceRadius, 108, 108);
 let planetOrbitEdges = new THREE.EdgesGeometry(planetOrbitGeometry);
 let planet1OrbitEdges = new THREE.EdgesGeometry(planet1OrbitGeometry);
-let moonOrbitGeometry = new THREE.CircleGeometry(position.moon.traceRadius, 32, 32);
+let moonOrbitGeometry = new THREE.CircleGeometry(position.moon.traceRadius, 108, 108);
 let moonOrbitEdges = new THREE.EdgesGeometry(moonOrbitGeometry);
+let starLight = new THREE.PointLight(0xffff00, 1, 0, 2);
 
 let materialRed = new THREE.MeshLambertMaterial({ color: COLOR_RED });
 let materialBlue = new THREE.MeshLambertMaterial({ color: COLOR_BLUE });
-let materialSkyBlue = new THREE.MeshLambertMaterial({ color: 0x7ec0ee });
+let materialSkyBlue = new THREE.MeshLambertMaterial({ color: 0x1e5878 });
 let materialGreen = new THREE.MeshLambertMaterial({ color: COLOR_GREEN });
 let materialYellow = new THREE.MeshLambertMaterial({ color: COLOR_YELLOW });
-let materialGray = new THREE.MeshLambertMaterial({ color: COLOR_GRAY});
+let materialGray = new THREE.MeshLambertMaterial({ color: COLOR_GRAY });
+let materialGrayAlt = new THREE.MeshLambertMaterial( {color: COLOR_GRAY_ALT});
 
 let materialXAxis = new THREE.LineBasicMaterial({ color: COLOR_RED });
 let materialZAxis = new THREE.LineBasicMaterial({ color: COLOR_BLUE });
@@ -84,7 +87,7 @@ let xAxisReferenceLine = new THREE.Line(xAxisGeometry, materialXAxis);
 let yAxisReferenceLine = new THREE.Line(yAxisGeometry, materialYAxis);
 let zAxisReferenceLine = new THREE.Line(zAxisGeometry, materialZAxis);
 let planetSphere = new THREE.Mesh(planetSphereGeometry, materialSkyBlue);
-let planet1Sphere = new THREE.Mesh(planet1SphereGeometry, materialRed);
+let planet1Sphere = new THREE.Mesh(planet1SphereGeometry, materialGrayAlt);
 let moonSphere = new THREE.Mesh(moonSphereGeometry, materialGray);
 let planetOrbitTraceLine = new THREE.LineSegments(planetOrbitEdges, new THREE.LineBasicMaterial({ color: 0xffffff }));
 let planet1OrbitTraceLine = new THREE.LineSegments(planet1OrbitEdges, new THREE.LineBasicMaterial({ color: 0xffffff }));
@@ -92,7 +95,7 @@ let moonOrbitTraceLine = new THREE.LineSegments(moonOrbitEdges, new THREE.LineBa
 let starSphereEdgeLines = new THREE.LineSegments(starSphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3 }));
 let planetSphereEdgeLines = new THREE.LineSegments(planetSphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3 }));
 let planet1SphereEdgeLines = new THREE.LineSegments(planet1SphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3 }));
-let moonSphereEdgeLines = new THREE.LineSegments(moonSphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3}));
+let moonSphereEdgeLines = new THREE.LineSegments(moonSphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3 }));
 
 let camera = new THREE.PerspectiveCamera(75, cameraProperties.aspectRatio, cameraProperties.near, cameraProperties.far);
 
@@ -100,7 +103,7 @@ let renderer = new THREE.WebGLRenderer({ antialias: true });
 
 window.addEventListener('load', () => {
     initializeScene();
-    document.body.appendChild(renderer.domElement);    
+    document.body.appendChild(renderer.domElement);
     animate();
 });
 
@@ -174,8 +177,10 @@ function initializeScene() {
 
     planetSphere.position.set(0, 0, -3);
     planetSphereEdgeLines.position.set(0, 0, -3);
-    
+
     planetOrbitTraceLine.rotation.set(toRadians(90), 0, 0);
+
+    starLight.position.set(0, 0, 0);
 
     scene.add(ambientLight);
     scene.add(starSphere);
@@ -192,6 +197,7 @@ function initializeScene() {
     scene.add(planetOrbitTraceLine);
     scene.add(planet1OrbitTraceLine);
     scene.add(moonOrbitTraceLine);
+    scene.add(starLight);
 }
 
 function getX(x, theta, radius) {
@@ -203,9 +209,9 @@ function getY(y, theta, radius) {
 }
 
 function toRadians(degrees) {
-    return degrees * (Math.PI/180.0);
+    return degrees * (Math.PI / 180.0);
 }
 
 function toDegrees(radians) {
-    return radians * (180.0/Math.PI);
+    return radians * (180.0 / Math.PI);
 }

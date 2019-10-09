@@ -9,7 +9,8 @@ const COLOR_RED = 0xff0000;
 const COLOR_GREEN = 0x00ff00;
 const COLOR_BLUE = 0x0000ff;
 const COLOR_YELLOW = 0xffff00;
-const COLOR_GRAY = 0xd3d3d3;
+const COLOR_GRAY = 0xf5f3ce;
+const COLOR_GRAY_ALT = 0x93B8BE;
 
 let position = {
     planet: {
@@ -67,6 +68,7 @@ let planetOrbitEdges = new THREE.EdgesGeometry(planetOrbitGeometry);
 let planet1OrbitEdges = new THREE.EdgesGeometry(planet1OrbitGeometry);
 let moonOrbitGeometry = new THREE.CircleGeometry(position.moon.traceRadius, 32, 32);
 let moonOrbitEdges = new THREE.EdgesGeometry(moonOrbitGeometry);
+let starLight = new THREE.PointLight(0xffff00, 1, 0, 2);
 
 let materialRed = new THREE.MeshLambertMaterial({ color: COLOR_RED });
 let materialBlue = new THREE.MeshLambertMaterial({ color: COLOR_BLUE });
@@ -196,9 +198,9 @@ function initializeScene() {
 
     zAxisGeometry.vertices.push(new THREE.Vector3(0, 0, -1 * AXIS_LENGTH));
     zAxisGeometry.vertices.push(new THREE.Vector3(0, 0, AXIS_LENGTH));
-
-    camera1.position.set(0, 0, 6);
-    camera1.rotation.set(0, 0, 0);
+    
+    camera1.position.set(-7, -1, -7)
+    camera1.rotation.set(0, 180, 90);
 
     camera2.position.set(0, 2, 8);
     camera2.rotation.set(0, 45, 0);
@@ -211,8 +213,8 @@ function initializeScene() {
     camera3.position.set(-7, 0, -7);
     camera3.rotation.set(0, 180, 0);
 
-    camera4.position.set(-7, -1, -7)
-    camera4.rotation.set(0, 180, 90);
+    camera4.position.set(0, 0, 6);
+    camera4.rotation.set(0, 0, 0);
 
     starSphere.position.set(0, 0, 0);
     starSphereEdgeLines.position.set(0, 0, 0);
@@ -221,6 +223,8 @@ function initializeScene() {
     planetSphereEdgeLines.position.set(0, 0, -5);
 
     planetOrbitTraceLine.rotation.set(toRadians(90), 0, 0);
+
+    starLight.position.set(0, 0, 0);
 
     scene.add(ambientLight);
     scene.add(starSphere);
@@ -237,6 +241,7 @@ function initializeScene() {
     scene.add(planetOrbitTraceLine);
     scene.add(planet1OrbitTraceLine);
     scene.add(moonOrbitTraceLine);
+    scene.add(starLight);
 }
 
 function onSelectedCameraChange() {
