@@ -32,6 +32,18 @@
             <div class="col-12">
                 <table>
                     <tr>
+                        <td>Show Orbits</td>
+                        <td>
+                            <input type='checkbox' onchange="onOrbitSettingChange(this)" checked>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Show Axes</td>
+                        <td>
+                            <input type='checkbox' onchange="onAxesSettingChange(this)" checked>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>
                             Select Camera
                         </td>
@@ -73,7 +85,7 @@
                                 onchange="onUpdate()">
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="axisLegend">
                         <td>Axis Legend</td>
                         <td>
                             <div class="color-legend x-axis-legend"></div> x axis

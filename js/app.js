@@ -2,6 +2,7 @@ const AXIS_LENGTH = 5;
 const VIEW_SCALE_FACTOR = 2.25;
 const STAR_ROTATION_FACTOR = 0.01;
 const PLANET_ROTATION_FACTOR = 0.02;
+const PLANET1_ROTATION_FACTOR = 0.005;
 const MOON_ROTATION_FACTOR = 0.015;
 
 const COLOR_RED = 0xff0000;
@@ -24,6 +25,13 @@ let position = {
         z: 0,
         theta: 0,
         traceRadius: 1,
+    },
+    planet1: {
+        x: 3,
+        y: 0,
+        z: 0,
+        theta: 0,
+        traceRadius: 2,
     }
 };
 
@@ -47,12 +55,16 @@ let zAxisGeometry = new THREE.Geometry();
 let ambientLight = new THREE.AmbientLight(0xfffffff)
 let starSphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 let planetSphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+let planet1SphereGeometry = new THREE.SphereGeometry(0.35, 32, 32);
 let moonSphereGeometry = new THREE.SphereGeometry(0.25, 32, 32);
 let starSphereEdges = new THREE.EdgesGeometry(starSphereGeometry);
 let planetSphereEdges = new THREE.EdgesGeometry(planetSphereGeometry);
+let planet1SphereEdges = new THREE.EdgesGeometry(planet1SphereGeometry);
 let moonSphereEdges = new THREE.EdgesGeometry(moonSphereGeometry);
 let planetOrbitGeometry = new THREE.CircleGeometry(position.planet.traceRadius, 32, 32);
+let planet1OrbitGeometry = new THREE.CircleGeometry(position.planet1.traceRadius, 32, 32);
 let planetOrbitEdges = new THREE.EdgesGeometry(planetOrbitGeometry);
+let planet1OrbitEdges = new THREE.EdgesGeometry(planet1OrbitGeometry);
 let moonOrbitGeometry = new THREE.CircleGeometry(position.moon.traceRadius, 32, 32);
 let moonOrbitEdges = new THREE.EdgesGeometry(moonOrbitGeometry);
 
@@ -72,11 +84,14 @@ let xAxisReferenceLine = new THREE.Line(xAxisGeometry, materialXAxis);
 let yAxisReferenceLine = new THREE.Line(yAxisGeometry, materialYAxis);
 let zAxisReferenceLine = new THREE.Line(zAxisGeometry, materialZAxis);
 let planetSphere = new THREE.Mesh(planetSphereGeometry, materialSkyBlue);
+let planet1Sphere = new THREE.Mesh(planet1SphereGeometry, materialRed);
 let moonSphere = new THREE.Mesh(moonSphereGeometry, materialGray);
 let planetOrbitTraceLine = new THREE.LineSegments(planetOrbitEdges, new THREE.LineBasicMaterial({ color: 0xffffff }));
+let planet1OrbitTraceLine = new THREE.LineSegments(planet1OrbitEdges, new THREE.LineBasicMaterial({ color: 0xffffff }));
 let moonOrbitTraceLine = new THREE.LineSegments(moonOrbitEdges, new THREE.LineBasicMaterial({ color: 0xffffff }));
 let starSphereEdgeLines = new THREE.LineSegments(starSphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3 }));
 let planetSphereEdgeLines = new THREE.LineSegments(planetSphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3 }));
+let planet1SphereEdgeLines = new THREE.LineSegments(planet1SphereEdges, new THREE.LineBasicMaterial({ color: 0x535353 }));
 let moonSphereEdgeLines = new THREE.LineSegments(moonSphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3}));
 
 let camera1 = new THREE.PerspectiveCamera(75, cameraProperties.aspectRatio, cameraProperties.near, cameraProperties.far);
@@ -93,6 +108,9 @@ let view1;
 let view2;
 let view3;
 let view4;
+
+let showOrbitTraces = true;
+let showReferenceAxes = true;
 
 
 window.addEventListener('load', () => {
@@ -121,24 +139,37 @@ let animate = function () {
     planetSphere.rotation.x -= PLANET_ROTATION_FACTOR;
     planetSphereEdgeLines.rotation.x -= PLANET_ROTATION_FACTOR;
 
+    planet1Sphere.rotation.x -= PLANET1_ROTATION_FACTOR;
+    planet1SphereEdgeLines.rotation.x -= PLANET1_ROTATION_FACTOR;
+
     moonSphere.rotation.x -= MOON_ROTATION_FACTOR;
     moonSphereEdgeLines.rotation.x -= MOON_ROTATION_FACTOR;
 
     position.planet.theta += 1;
     position.planet.x = getX(0, position.planet.theta, position.planet.traceRadius);
-    position.planet.y = getY(0, position.planet.theta, position.planet.traceRadius);
+    position.planet.z = getY(0, position.planet.theta, position.planet.traceRadius);
+
+    position.planet1.theta += 1;
+    position.planet1.x = getX(0, position.planet1.theta, position.planet1.traceRadius);
+    position.planet1.y = getY(0, position.planet1.theta, position.planet1.traceRadius);
 
     moonOrbitTraceLine.position.set(position.planet.x, position.planet.y, position.planet.z);
 
     position.moon.theta += 1;
-    position.moon.x = getX(0, position.moon.theta, position.moon.traceRadius);
-    position.moon.y = getY(0, position.moon.theta, position.moon.traceRadius);
+    position.moon.x = -1 * getX(0, position.moon.theta, position.moon.traceRadius);
+    position.moon.y = -1 * getY(0, position.moon.theta, position.moon.traceRadius);
 
     planetSphere.position.set(position.planet.x, position.planet.y, position.planet.z);
     planetSphereEdgeLines.position.set(position.planet.x, position.planet.y, position.planet.z);
 
+    planet1Sphere.position.set(position.planet1.x, position.planet1.y, position.planet1.z);
+    planet1SphereEdgeLines.position.set(position.planet1.x, position.planet1.y, position.planet1.z);
+
     moonSphere.position.set(position.planet.x + position.moon.x, position.planet.y + position.moon.y, position.planet.z + position.moon.z);
     moonSphereEdgeLines.position.set(position.planet.x + position.moon.x, position.planet.y + position.moon.y, position.planet.z + position.moon.z);
+
+    planet1OrbitTraceLine.visible = planetOrbitTraceLine.visible = moonOrbitTraceLine.visible = !!showOrbitTraces;
+    xAxisReferenceLine.visible = yAxisReferenceLine.visible = zAxisReferenceLine.visible = !!showReferenceAxes;
 
     renderer1.render(scene, camera1);
     renderer2.render(scene, camera2);
@@ -170,7 +201,7 @@ function initializeScene() {
     camera1.rotation.set(0, 0, 0);
 
     camera2.position.set(0, 2, 8);
-    camera2.rotation.set(0, 0, 0);
+    camera2.rotation.set(0, 45, 0);
 
     var controls = new THREE.OrbitControls(camera2, renderer2.domElement);
     controls.maxPolarAngle = Math.PI * 0.5;
@@ -189,17 +220,22 @@ function initializeScene() {
     planetSphere.position.set(0, 0, -5);
     planetSphereEdgeLines.position.set(0, 0, -5);
 
+    planetOrbitTraceLine.rotation.set(toRadians(90), 0, 0);
+
     scene.add(ambientLight);
     scene.add(starSphere);
     scene.add(planetSphere);
     scene.add(moonSphere);
+    scene.add(planet1Sphere);
     scene.add(starSphereEdgeLines);
     scene.add(planetSphereEdgeLines);
+    scene.add(planet1SphereEdgeLines);
     scene.add(moonSphereEdgeLines);
     scene.add(xAxisReferenceLine);
     scene.add(yAxisReferenceLine);
     scene.add(zAxisReferenceLine);
     scene.add(planetOrbitTraceLine);
+    scene.add(planet1OrbitTraceLine);
     scene.add(moonOrbitTraceLine);
 }
 
@@ -213,6 +249,33 @@ function onSelectedCameraChange() {
         setValue('rotx', selectedCameraRef.rotation.x);
         setValue('roty', selectedCameraRef.rotation.y);
         setValue('rotz', selectedCameraRef.rotation.z);
+    }
+}
+
+/**
+ * @param {HTMLInputElement} checkboxInput 
+ */
+function onOrbitSettingChange(checkboxInput) {
+    if (checkboxInput) {
+        showOrbitTraces = !!checkboxInput.checked;
+    }
+}
+
+/**
+ * @param {HTMLInputElement} checkboxInput 
+ */
+function onAxesSettingChange(checkboxInput) {
+    if (checkboxInput) {
+        let value = !!checkboxInput.checked
+        let legend = document.querySelector("#axisLegend");
+        showReferenceAxes = value;
+        if (legend) {
+            if (!value) {
+                legend.classList.add('d-none');
+            } else {
+                legend.classList.remove('d-none');
+            }
+        }
     }
 }
 
@@ -316,4 +379,12 @@ function getX(x, theta, radius) {
 
 function getY(y, theta, radius) {
     return y + Math.sin((Math.PI / 180) * theta) * radius;
+}
+
+function toRadians(degrees) {
+    return degrees * (Math.PI/180.0);
+}
+
+function toDegrees(radians) {
+    return radians * (180.0/Math.PI);
 }
