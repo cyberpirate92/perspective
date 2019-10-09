@@ -6,3 +6,23 @@ canvas {
     width: 100%;
     height: 100%
 }
+
+.color-legend {
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    border: 1px solid rgba(0, 0, 0, .2);
+}
+  
+.x-axis-legend {
+    background: #ff0000;
+}
+
+.y-axis-legend {
+    background: #00ff00;
+}
+
+.z-axis-legend {
+    background: #0000ff;
+}

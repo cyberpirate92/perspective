@@ -78,23 +78,25 @@ window.addEventListener('load', () => {
     scene.add(yAxisReferenceLine);
     scene.add(zAxisReferenceLine);
 
-    setPosition(camera1, 0, 0, 5);
+    setPosition(camera1, 0, 0, 4);
     setRotation(camera1);
 
     setPosition(camera2, 0, 2, 6);
     setRotation(camera2);
 
-    setPosition(camera3, -10, 0, -5);
+    setPosition(camera3, -5, 0, -5);
     setRotation(camera3, 0, 180, 0);
 
-    setPosition(camera4, -5, -2, 5);
-    setRotation(camera4);
+    setPosition(camera4, -5, -1, -5);
+    setRotation(camera4, 0, 180, 90);
 
     setPosition(starSphere, 0, 0, 0);
     setPosition(starSphereEdgeLines, 0, 0, 0);
     setPosition(planetSphere, 0, 0, -3);
     setPosition(planetSphereEdgeLines, 0, 0, -3);
 
+    onSelectedCameraChange();
+    
     animate();
 });
 

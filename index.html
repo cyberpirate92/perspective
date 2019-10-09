@@ -18,52 +18,71 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid bg-light">
+        <div class="row py-2 bg-dark text-white">
+            <div class="col-12">
+                <h4>perspective.</h4>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
-                <div class="form-row">
-                    <div class="col-auto">
-                        <select class="form-control" id="selectedCamera" onchange="onSelectedCameraChange()">
-                            <option value="camera1">Camera 1</option>
-                            <option value="camera2">Camera 2</option>
-                            <option value="camera3">Camera 3</option>
-                            <option value="camera4">Camera 4</option>
-                        </select>
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn-sm btn-primary" onclick="onUpdate()">Update</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-row">
-                    <div class="col-auto">
-                        <label>Position</label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="pos-x" id="posx">
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="pos-y" id="posy">
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="pos-z" id="posz">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-auto">
-                        <label>Rotation</label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="rot-x" id="rotx">
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="rot-y" id="roty">
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="rot-z" id="rotz">
-                    </div>
-                </div>
+                <table>
+                    <tr>
+                        <td>
+                            Select Camera
+                        </td>
+                        <td colspan="3">
+                            <select class="form-control" id="selectedCamera" onchange="onSelectedCameraChange()">
+                                <option value="camera1">Camera 1 (View 1)</option>
+                                <option value="camera2" disabled>Camera 2 (View 2)</option>
+                                <option value="camera3">Camera 3 (View 3)</option>
+                                <option value="camera4">Camera 4 (View 4)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Position</td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="pos-x" id="posx"
+                                onchange="onUpdate()">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="pos-y" id="posy"
+                                onchange="onUpdate()">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="pos-z" id="posz"
+                                onchange="onUpdate()">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Rotation</td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="rot-x" id="rotx"
+                                onchange="onUpdate()">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="rot-y" id="roty"
+                                onchange="onUpdate()">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" placeholder="rot-z" id="rotz"
+                                onchange="onUpdate()">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Axis Legend</td>
+                        <td>
+                            <div class="color-legend x-axis-legend"></div> x axis
+                        </td>
+                        <td>
+                            <div class="color-legend y-axis-legend"></div> y axis
+                        </td>
+                        <td>
+                            <div class="color-legend z-axis-legend"></div> z axis
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
         <div class="row">
@@ -71,8 +90,8 @@
                 <table class="table table-bordered">
                     <thead class="bg-dark text-white">
                         <tr>
-                            <th class="text-center">View1</th>
-                            <th class="text-center">View2</th>
+                            <th class="text-center">View 1</th>
+                            <th class="text-center">View 2</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,8 +112,8 @@
                 <table class="table table-bordered">
                     <thead class="bg-dark text-white">
                         <tr>
-                            <th class="text-center">View3</th>
-                            <th class="text-center">View4</th>
+                            <th class="text-center">View 3</th>
+                            <th class="text-center">View 4</th>
                         </tr>
                     </thead>
                     <tbody>
