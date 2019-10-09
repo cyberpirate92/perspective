@@ -7,24 +7,25 @@ let xAxisGeometry = new THREE.Geometry();
 let yAxisGeometry = new THREE.Geometry();
 let zAxisGeometry = new THREE.Geometry();
 let boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-let starSphereGeometry = new THREE.SphereGeometry();
-let planetSphereGeometry = new THREE.SphereGeometry(0.5);
+let ambientLight = new THREE.AmbientLight( 0xfffffff )
+let starSphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+let planetSphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
 let starSphereEdges = new THREE.EdgesGeometry(starSphereGeometry);
 let planetSphereEdges = new THREE.EdgesGeometry(planetSphereGeometry);
 
-let materialRed = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-let materialBlue = new THREE.MeshBasicMaterial({ color: 0x0000ff });
-let materialGreen = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-let materialYellow = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-let materialSkyBlue = new THREE.MeshBasicMaterial({ color: 0x7ec0ee });
+let materialRed = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+let materialBlue = new THREE.MeshLambertMaterial({ color: 0x0000ff });
+let materialGreen = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
+let materialYellow = new THREE.MeshLambertMaterial({ color: 0xffff00 });
+let materialSkyBlue = new THREE.MeshLambertMaterial({ color: 0x7ec0ee });
 let materialXAxis = new THREE.LineBasicMaterial({ color: 0xff0000 });
 let materialYAxis = new THREE.LineBasicMaterial({ color: 0x00ff00 });
 let materialZAxis = new THREE.LineBasicMaterial({ color: 0x0000ff });
 
 let starSphere = new THREE.Mesh(starSphereGeometry, materialYellow);
 let planetSphere = new THREE.Mesh(planetSphereGeometry, materialSkyBlue);
-let starSphereEdgeLines = new THREE.LineSegments(starSphereEdges, new THREE.LineBasicMaterial({ color: 0x000000 }));
-let planetSphereEdgeLines = new THREE.LineSegments(planetSphereEdges, new THREE.LineBasicMaterial({ color: 0x000000 }));
+let starSphereEdgeLines = new THREE.LineSegments(starSphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3 }));
+let planetSphereEdgeLines = new THREE.LineSegments(planetSphereEdges, new THREE.LineBasicMaterial({ color: 0xa3a3a3 }));
 let xAxisReferenceLine = new THREE.Line(xAxisGeometry, materialXAxis);
 let yAxisReferenceLine = new THREE.Line(yAxisGeometry, materialYAxis);
 let zAxisReferenceLine = new THREE.Line(zAxisGeometry, materialZAxis);
@@ -34,16 +35,26 @@ let camera2 = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerH
 let camera3 = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerHeight) * 1, 0.1, 1000);
 let camera4 = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerHeight) * 1, 0.1, 1000);
 
-let renderer1 = new THREE.WebGLRenderer();
-let renderer2 = new THREE.WebGLRenderer();
-let renderer3 = new THREE.WebGLRenderer();
-let renderer4 = new THREE.WebGLRenderer();
+let renderer1 = new THREE.WebGLRenderer({ antialias: true });
+let renderer2 = new THREE.WebGLRenderer({ antialias: true });
+let renderer3 = new THREE.WebGLRenderer({ antialias: true });
+let renderer4 = new THREE.WebGLRenderer({ antialias: true });
 
 let view1;
 let view2;
 let view3;
 let view4;
 let cameraVelocity;
+
+let position = {
+    planet: {
+        x: 6,
+        y: 0,
+        z: 0,
+        theta: 0,
+        traceRadius: 2
+    }
+};
 
 xAxisGeometry.vertices.push(new THREE.Vector3(-5, 0, 0));
 xAxisGeometry.vertices.push(new THREE.Vector3(5, 0, 0));
@@ -61,15 +72,20 @@ window.addEventListener('load', () => {
     view4 = document.querySelector("#view4");
 
     renderer1.setSize(window.innerWidth / SCALE_FACTOR, window.innerHeight / SCALE_FACTOR);
+    renderer1.setPixelRatio(window.devicePixelRatio);
     renderer2.setSize(window.innerWidth / SCALE_FACTOR, window.innerHeight / SCALE_FACTOR);
+    renderer2.setPixelRatio(window.devicePixelRatio);
     renderer3.setSize(window.innerWidth / SCALE_FACTOR, window.innerHeight / SCALE_FACTOR);
+    renderer3.setPixelRatio(window.devicePixelRatio);
     renderer4.setSize(window.innerWidth / SCALE_FACTOR, window.innerHeight / SCALE_FACTOR);
+    renderer4.setPixelRatio(window.devicePixelRatio);
 
     view1.appendChild(renderer1.domElement);
     view2.appendChild(renderer2.domElement);
     view3.appendChild(renderer3.domElement);
     view4.appendChild(renderer4.domElement);
 
+    scene.add(ambientLight);
     scene.add(starSphere);
     scene.add(planetSphere);
     scene.add(starSphereEdgeLines);
@@ -78,25 +94,26 @@ window.addEventListener('load', () => {
     scene.add(yAxisReferenceLine);
     scene.add(zAxisReferenceLine);
 
-    setPosition(camera1, 0, 0, 4);
-    setRotation(camera1);
+    camera1.position.set(0, 0, 4);
+    camera1.rotation.set(0, 0, 0);
 
-    setPosition(camera2, 0, 2, 6);
-    setRotation(camera2);
+    camera2.position.set(0, 2, 6);
+    camera2.rotation.set(0, 0, 0);
 
-    setPosition(camera3, -5, 0, -5);
-    setRotation(camera3, 0, 180, 0);
+    camera3.position.set(-5, 0, -5);
+    camera3.rotation.set(0, 180, 0);
 
-    setPosition(camera4, -5, -1, -5);
-    setRotation(camera4, 0, 180, 90);
+    camera4.position.set(-5, -1, -5)
+    camera4.rotation.set(0, 180, 90);
 
-    setPosition(starSphere, 0, 0, 0);
-    setPosition(starSphereEdgeLines, 0, 0, 0);
-    setPosition(planetSphere, 0, 0, -3);
-    setPosition(planetSphereEdgeLines, 0, 0, -3);
+    starSphere.position.set(0, 0, 0);
+
+    starSphereEdgeLines.position.set(0, 0, 0);
+    planetSphere.position.set(0, 0, -3);
+    planetSphereEdgeLines.position.set(0, 0, -3);
 
     onSelectedCameraChange();
-    
+
     animate();
 });
 
@@ -105,8 +122,15 @@ let animate = function () {
 
     starSphere.rotation.x += 0.01;
     starSphereEdgeLines.rotation.x += 0.01;
-    planetSphere.rotation.x -= 0.03;
-    planetSphereEdgeLines.rotation.x -= 0.03;
+    planetSphere.rotation.x -= 0.02;
+    planetSphereEdgeLines.rotation.x -= 0.02;
+
+    position.planet.theta += 1;
+    position.planet.x = getX(0, position.planet.theta, position.planet.traceRadius);
+    position.planet.y = getY(0, position.planet.theta, position.planet.traceRadius);
+
+    planetSphere.position.set(position.planet.x, position.planet.y, position.planet.z);
+    planetSphereEdgeLines.position.set(position.planet.x, position.planet.y, position.planet.z);
 
     if (camera2.position.z < 0) {
         cameraVelocity = Math.abs(CAMERA_VELOCITY);
@@ -228,18 +252,10 @@ function getCameraRef(selectedCamera) {
     return null;
 }
 
-function setPosition(obj3d, x, y, z) {
-    if (obj3d && obj3d.position) {
-        obj3d.position.x = x || 0;
-        obj3d.position.y = y || 0;
-        obj3d.position.z = z || 0;
-    }
+function getX(x, theta, radius) {
+    return x + Math.cos((Math.PI / 180) * theta) * radius;
 }
 
-function setRotation(obj3d, x, y, z) {
-    if (obj3d && obj3d.rotation) {
-        obj3d.rotation.x = x || 0;
-        obj3d.rotation.y = y || 0;
-        obj3d.rotation.z = z || 0;
-    }
+function getY(y, theta, radius) {
+    return y + Math.sin((Math.PI / 180) * theta) * radius;
 }
