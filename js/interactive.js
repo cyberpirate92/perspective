@@ -92,18 +92,18 @@ window.addEventListener('load', () => {
 let animate = function () {
     requestAnimationFrame(animate);
 
-    starSphere.rotation.x += STAR_ROTATION_FACTOR;
-    starSphereEdgeLines.rotation.x += STAR_ROTATION_FACTOR;
+    starSphere.rotation.y += STAR_ROTATION_FACTOR;
+    starSphereEdgeLines.rotation.y += STAR_ROTATION_FACTOR;
 
-    planetSphere.rotation.x -= PLANET_ROTATION_FACTOR;
-    planetSphereEdgeLines.rotation.x -= PLANET_ROTATION_FACTOR;
+    planetSphere.rotation.y -= PLANET_ROTATION_FACTOR;
+    planetSphereEdgeLines.rotation.y -= PLANET_ROTATION_FACTOR;
 
     moonSphere.rotation.x -= MOON_ROTATION_FACTOR;
     moonSphereEdgeLines.rotation.x -= MOON_ROTATION_FACTOR;
 
     position.planet.theta += 1;
     position.planet.x = getX(0, position.planet.theta, position.planet.traceRadius);
-    position.planet.y = getY(0, position.planet.theta, position.planet.traceRadius);
+    position.planet.z = getY(0, position.planet.theta, position.planet.traceRadius);
 
     moonOrbitTraceLine.position.set(position.planet.x, position.planet.y, position.planet.z);
 
@@ -137,7 +137,7 @@ function initializeScene() {
     zAxisGeometry.vertices.push(new THREE.Vector3(0, 0, -1 * AXIS_LENGTH));
     zAxisGeometry.vertices.push(new THREE.Vector3(0, 0, AXIS_LENGTH));
 
-    camera.position.set(0, 0, 10);
+    camera.position.set(0, 0, 14);
 
     var controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.maxPolarAngle = Math.PI * 0.5;
@@ -149,6 +149,8 @@ function initializeScene() {
 
     planetSphere.position.set(0, 0, -3);
     planetSphereEdgeLines.position.set(0, 0, -3);
+    
+    planetOrbitTraceLine.rotation.set(toRadians(90), 0, 0);
 
     scene.add(ambientLight);
     scene.add(starSphere);
@@ -170,4 +172,12 @@ function getX(x, theta, radius) {
 
 function getY(y, theta, radius) {
     return y + Math.sin((Math.PI / 180) * theta) * radius;
+}
+
+function toRadians(degrees) {
+    return degrees * (Math.PI/180.0);
+}
+
+function toDegrees(radians) {
+    return radians * (180.0/Math.PI);
 }
