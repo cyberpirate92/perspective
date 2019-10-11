@@ -7,3 +7,4 @@ A collection of my threeJs demos
 | [Index](https://cyberpirate92.github.io/perspective/index.html)  | Index page listing demos  |
 | [Planetary System, Multiple angles](https://cyberpirate92.github.io/perspective/views.html)  | A simple star system consisting of a star and 2 planets demonstrating rotation and revolution in multiple views  |
 | [Planetary System, Interactive view](https://cyberpirate92.github.io/perspective/interactive.html)  | A simple star system consisting of a star and 2 planets demonstrating rotation and revolution with interactive camera  |
+| [Solar System](https://cyberpirate92.github.io/perspective/starSystem.html)  | A model similar to our solar system with circular orbits (moons & asteroid belt yet to be added)  |
